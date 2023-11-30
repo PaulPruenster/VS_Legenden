@@ -45,3 +45,7 @@ The smart parking management system would require several AWS Lambda functions t
 4. **Mobile Application Data Provision Lambda:** This Lambda function would handle requests from the mobile application for real-time parking availability information. It would query the central database and provide the app with the latest parking occupancy status for specific parking lots or areas.
 
 5. **Parking Utilization Analytics Lambda:** This Lambda function would periodically analyze aggregated parking data to identify trends, patterns, and anomalies. It would generate reports and insights for city officials to inform their parking management decisions. This function could be run periodiacally (every 24h) to get statistics about the parking spaces.
+
+## Workflow
+
+![test](image.svg)
