@@ -48,4 +48,4 @@ The smart parking management system would require several AWS Lambda functions t
 
 ## Workflow
 
-![test](image.svg)
+![test](image.png)
