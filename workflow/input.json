@@ -1,0 +1,11 @@
+{
+  "MyParkingSystemWorkflow": {
+    "all_tweets": [
+      "Tweet 1",
+      "Tweet 2",
+      "Tweet 3"
+    ],
+    "desired_num_batches": 5,
+    "inference_type": "TENSORFLOW"
+  }
+}
