@@ -32,7 +32,7 @@ def lambda_handler(event, context):
 
     step_function_request = {
         "image_key": image_key,
-        "id": 10,
+        "parking_space_id": parking_space_id,
     }
 
     response = client.start_execution(
