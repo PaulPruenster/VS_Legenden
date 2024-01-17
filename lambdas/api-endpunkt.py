@@ -2,14 +2,7 @@ import boto3
 import json
 import datetime
 import base64
-"""
-json body should look like:
-{
-    "id": 10,
-    "image": "/9j/2wBDAAg ...." < base64 encoded image
-}
 
-"""
 s3 = boto3.client('s3')
 client = boto3.client('stepfunctions')
 bucket_name = "verteiltesystemeparkingsystem"
@@ -34,14 +27,11 @@ def lambda_handler(event, context):
     # safe the image to the bucket
     s3.put_object(Body=image_buffer, Bucket=bucket_name, Key=image_key)
 
-    # create the URL for the image
-    image_url = f"https://{bucket_name}.s3.amazonaws.com/{image_key}"
-
     # Create a Step Functions client
     client = boto3.client('stepfunctions')
 
     step_function_request = {
-        "url": image_url,
+        "image_key": image_key,
         "id": 10,
     }
 
