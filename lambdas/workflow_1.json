@@ -1,209 +1,209 @@
 {
-    "Comment": "A description of my state machine",
-    "StartAt": "Regognice what we see in the picute",
-    "States": {
-      "Regognice what we see in the picute": {
-        "Type": "Task",
-        "Resource": "arn:aws:states:::lambda:invoke",
-        "OutputPath": "$.Payload",
-        "Parameters": {
-          "Payload.$": "$",
-          "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:rekognition:$LATEST"
-        },
-        "Retry": [
-          {
-            "ErrorEquals": [
-              "Lambda.ServiceException",
-              "Lambda.AWSLambdaException",
-              "Lambda.SdkClientException",
-              "Lambda.TooManyRequestsException"
-            ],
-            "IntervalSeconds": 1,
-            "MaxAttempts": 3,
-            "BackoffRate": 2
-          }
-        ],
-        "Next": "Parallel"
+  "Comment": "A description of my state machine",
+  "StartAt": "recognize what we see in the picute",
+  "States": {
+    "recognize what we see in the picute": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:rekognition:$LATEST"
       },
-      "Parallel": {
-        "Type": "Parallel",
-        "Branches": [
-          {
-            "StartAt": "Is fire",
-            "States": {
-              "Is fire": {
-                "Type": "Choice",
-                "Choices": [
-                  {
-                    "Variable": "$.fire",
-                    "BooleanEquals": true,
-                    "Next": "send alarm"
-                  }
-                ],
-                "Default": "do nothing"
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Parallel"
+    },
+    "Parallel": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "Is fire",
+          "States": {
+            "Is fire": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.fire",
+                  "BooleanEquals": true,
+                  "Next": "send alarm"
+                }
+              ],
+              "Default": "do nothing"
+            },
+            "send alarm": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:test:$LATEST"
               },
-              "send alarm": {
-                "Type": "Task",
-                "Resource": "arn:aws:states:::lambda:invoke",
-                "OutputPath": "$.Payload",
-                "Parameters": {
-                  "Payload.$": "$",
-                  "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:test:$LATEST"
-                },
-                "Retry": [
-                  {
-                    "ErrorEquals": [
-                      "Lambda.ServiceException",
-                      "Lambda.AWSLambdaException",
-                      "Lambda.SdkClientException",
-                      "Lambda.TooManyRequestsException"
-                    ],
-                    "IntervalSeconds": 1,
-                    "MaxAttempts": 3,
-                    "BackoffRate": 2
-                  }
-                ],
-                "End": true
-              },
-              "do nothing": {
-                "Type": "Pass",
-                "End": true
-              }
-            }
-          },
-          {
-            "StartAt": "is car",
-            "States": {
-              "is car": {
-                "Type": "Choice",
-                "Choices": [
-                  {
-                    "Variable": "$.car",
-                    "BooleanEquals": true,
-                    "Next": "regognice lincennce"
-                  }
-                ],
-                "Default": "remove car"
-              },
-              "remove car": {
-                "Type": "Task",
-                "Resource": "arn:aws:states:::lambda:invoke",
-                "OutputPath": "$.Payload",
-                "Parameters": {
-                  "Payload.$": "$",
-                  "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:remove_car:$LATEST"
-                },
-                "Retry": [
-                  {
-                    "ErrorEquals": [
-                      "Lambda.ServiceException",
-                      "Lambda.AWSLambdaException",
-                      "Lambda.SdkClientException",
-                      "Lambda.TooManyRequestsException"
-                    ],
-                    "IntervalSeconds": 1,
-                    "MaxAttempts": 3,
-                    "BackoffRate": 2
-                  }
-                ],
-                "Next": "update dynamo"
-              },
-              "update dynamo": {
-                "Type": "Task",
-                "Resource": "arn:aws:states:::lambda:invoke",
-                "OutputPath": "$.Payload",
-                "Parameters": {
-                  "Payload.$": "$",
-                  "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:dynamoUpdate:$LATEST"
-                },
-                "Retry": [
-                  {
-                    "ErrorEquals": [
-                      "Lambda.ServiceException",
-                      "Lambda.AWSLambdaException",
-                      "Lambda.SdkClientException",
-                      "Lambda.TooManyRequestsException"
-                    ],
-                    "IntervalSeconds": 1,
-                    "MaxAttempts": 3,
-                    "BackoffRate": 2
-                  }
-                ],
-                "End": true
-              },
-              "regognice lincennce": {
-                "Type": "Task",
-                "Resource": "arn:aws:states:::lambda:invoke",
-                "OutputPath": "$.Payload",
-                "Parameters": {
-                  "Payload.$": "$",
-                  "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:findLicense:$LATEST"
-                },
-                "Retry": [
-                  {
-                    "ErrorEquals": [
-                      "Lambda.ServiceException",
-                      "Lambda.AWSLambdaException",
-                      "Lambda.SdkClientException",
-                      "Lambda.TooManyRequestsException"
-                    ],
-                    "IntervalSeconds": 1,
-                    "MaxAttempts": 3,
-                    "BackoffRate": 2
-                  }
-                ],
-                "Next": "update dynamo 2"
-              },
-              "update dynamo 2": {
-                "Type": "Task",
-                "Resource": "arn:aws:states:::lambda:invoke",
-                "OutputPath": "$.Payload",
-                "Parameters": {
-                  "Payload.$": "$",
-                  "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:dynamoUpdate:$LATEST"
-                },
-                "Retry": [
-                  {
-                    "ErrorEquals": [
-                      "Lambda.ServiceException",
-                      "Lambda.AWSLambdaException",
-                      "Lambda.SdkClientException",
-                      "Lambda.TooManyRequestsException"
-                    ],
-                    "IntervalSeconds": 1,
-                    "MaxAttempts": 3,
-                    "BackoffRate": 2
-                  }
-                ],
-                "End": true
-              }
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException",
+                    "Lambda.TooManyRequestsException"
+                  ],
+                  "IntervalSeconds": 1,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2
+                }
+              ],
+              "End": true
+            },
+            "do nothing": {
+              "Type": "Pass",
+              "End": true
             }
           }
-        ],
-        "Next": "delte image"
-      },
-      "delte image": {
-        "Type": "Task",
-        "Resource": "arn:aws:states:::lambda:invoke",
-        "OutputPath": "$.Payload",
-        "Parameters": {
-          "Payload.$": "$",
-          "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:deleteImage:$LATEST"
         },
-        "Retry": [
-          {
-            "ErrorEquals": [
-              "Lambda.ServiceException",
-              "Lambda.AWSLambdaException",
-              "Lambda.SdkClientException",
-              "Lambda.TooManyRequestsException"
-            ],
-            "IntervalSeconds": 1,
-            "MaxAttempts": 3,
-            "BackoffRate": 2
+        {
+          "StartAt": "is car",
+          "States": {
+            "is car": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.car",
+                  "BooleanEquals": true,
+                  "Next": "recognize licence text"
+                }
+              ],
+              "Default": "remove car"
+            },
+            "remove car": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:remove_car:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException",
+                    "Lambda.TooManyRequestsException"
+                  ],
+                  "IntervalSeconds": 1,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2
+                }
+              ],
+              "Next": "update dynamo"
+            },
+            "update dynamo": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:dynamoUpdate:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException",
+                    "Lambda.TooManyRequestsException"
+                  ],
+                  "IntervalSeconds": 1,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2
+                }
+              ],
+              "End": true
+            },
+            "recognize licence text": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:findLicense:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException",
+                    "Lambda.TooManyRequestsException"
+                  ],
+                  "IntervalSeconds": 1,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2
+                }
+              ],
+              "Next": "update dynamo 2"
+            },
+            "update dynamo 2": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:dynamoUpdate:$LATEST"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException",
+                    "Lambda.TooManyRequestsException"
+                  ],
+                  "IntervalSeconds": 1,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 2
+                }
+              ],
+              "End": true
+            }
           }
-        ],
-        "End": true
-      }
+        }
+      ],
+      "Next": "delte image"
+    },
+    "delte image": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:deleteImage:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "End": true
     }
   }
+}
