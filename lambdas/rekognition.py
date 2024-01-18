@@ -9,21 +9,9 @@ import json
 }
 """
 
-aws_region = "us-east-1"
-phone_number = "+393409590100"
-
-sns = boto3.client('sns', region_name=aws_region)
-
 bucket = 'verteiltesystemeparkingsystem'
 fire_words = ['fire', 'flames']
 car_words = ['car', "license plate", "vehicle", "transportation"]
-
-def send_sms(message):
-    sns.publish(
-        PhoneNumber=phone_number,
-        Message=message
-    )
-
 
 def lambda_handler(event, context):
     s3 = boto3.client('s3')
@@ -48,8 +36,6 @@ def lambda_handler(event, context):
             for word in fire_words:
                 if word in name:
                     fire = True
-                    send_sms('Caution: Fire detected in parking space {}'.format(parking_space_id))
-                    break
 
             for word in car_words:
                 if word in name:
