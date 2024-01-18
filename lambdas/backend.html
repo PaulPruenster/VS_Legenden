@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpineJS Parking</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+
+<body>
+    <h1>Survailance camera backend</h1>
+
+    <div x-data="{imageUrl: ''}" style="display: flex; flex-direction: column; gap: 20px">
+        <template x-if="imageUrl">
+            <img :src="imageUrl" style="width: 200px; height: 200px;">
+        </template>
+
+        <input type="file" accept="image/*" @change="fileChosen">
+
+        <br>
+        <button @click="upload">Upload Image!</button>
+    </div>
+
+    <script>
+        function upload() {
+            console.log(this.imageUrl);
+        }
+
+        function fileChosen(event) {
+            if (!event.target.files.length) return
+
+            let file = event.target.files[0]
+            let reader = new FileReader()
+
+            reader.readAsDataURL(file)
+            reader.onload = e => this.imageUrl = e.target.result
+        }
+    </script>
+
+</body>
+
+</html>
