@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpineJS Parking</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+
+<body x-data="{search: false, term: '', spaces: 0}">
+    <h1>Alpine Parking</h1>
+
+    <h2 x-init="getFreeSpaces">Free parking spaces: <strong x-text="spaces"></strong></h2>
+
+    <div x-show="!search" x-transition>
+        <input x-model="term" placeholder="Type number plate here..." type="text" />
+        <button @click="findMyCar">Find my car!</button>
+    </div>
+
+    <div x-show="search" x-transition>
+        <p>Your car was not found!</p>
+        <button @click="search = false" x-transition>Back</button>
+    </div>
+
+    <script>
+        function getFreeSpaces() {
+            this.spaces = 100
+        }
+
+        function findMyCar(e) {
+            this.search = true
+            console.log(e)
+        }
+    </script>
+
+</body>
+
+</html>
