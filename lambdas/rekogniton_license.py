@@ -29,6 +29,6 @@ def lambda_handler(event, context):
         "image_key": key,
         "parking_space_id": event['parking_space_id'],
         "license_plate": text,
-        "is_empty": text == ""
+        "is_empty": False
     }
     return output
