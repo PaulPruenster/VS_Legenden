@@ -1,7 +1,33 @@
 {
   "Comment": "A description of my state machine",
-  "StartAt": "recognize what we see in the picute",
+  "StartAt": "Choice",
   "States": {
+    "Choice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Or": [
+            {
+              "Not": {
+                "Variable": "$.parking_space_id",
+                "IsPresent": true
+              }
+            },
+            {
+              "Not": {
+                "Variable": "$.image_key",
+                "IsPresent": true
+              }
+            }
+          ],
+          "Next": "Fail"
+        }
+      ],
+      "Default": "recognize what we see in the picute"
+    },
+    "Fail": {
+      "Type": "Fail"
+    },
     "recognize what we see in the picute": {
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
@@ -48,7 +74,7 @@
               "OutputPath": "$.Payload",
               "Parameters": {
                 "Payload.$": "$",
-                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:test:$LATEST"
+                "FunctionName": "arn:aws:lambda:us-east-1:798389635088:function:senfFireSMS:$LATEST"
               },
               "Retry": [
                 {
