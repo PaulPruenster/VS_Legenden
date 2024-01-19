@@ -1,11 +1,4 @@
 {
-  "MyParkingSystemWorkflow": {
-    "all_tweets": [
-      "Tweet 1",
-      "Tweet 2",
-      "Tweet 3"
-    ],
-    "desired_num_batches": 5,
-    "inference_type": "TENSORFLOW"
+    "image_key": "1_2024-01-17T23:14:40.jpg",
+    "parking_space_id": 1
   }
-}
