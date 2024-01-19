@@ -28,19 +28,22 @@
         function upload() {
             console.log(this.imageUrl);
 
-            const data = {
-                id: 0,
-                image: this.imageUrl
-            }
+
+            //const base64 = require('base64');
+            //const image = new Blob([new Uint8Array(file)], { type: 'image/png' });
+            //const base64EncodedImage = base64.encode(this.imageUrl);
+
+            //console.log(base64EncodedImage);    
+
+
+            const data = JSON.stringify({
+                id: 1,
+                image: this.imageUrl.replace(/^data:image\/[a-z]+;base64,/, ""),
+            })
 
             fetch("https://pz667tpdh7.execute-api.us-east-1.amazonaws.com/default/api-endpunkt", {
                 method: "POST",
                 headers: {
-                    "Access-Control-Request-Method": "POST",
-                    "Access-Control-Request-Headers": "*",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "POST",
-                    "Access-Control-Allow-Headers": "*",
                     "Content-Type": "application/json"
                 },
                 body: data,
