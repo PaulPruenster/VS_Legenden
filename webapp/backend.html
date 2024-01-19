@@ -28,14 +28,6 @@
         function upload() {
             console.log(this.imageUrl);
 
-
-            //const base64 = require('base64');
-            //const image = new Blob([new Uint8Array(file)], { type: 'image/png' });
-            //const base64EncodedImage = base64.encode(this.imageUrl);
-
-            //console.log(base64EncodedImage);    
-
-
             const data = JSON.stringify({
                 id: 1,
                 image: this.imageUrl.replace(/^data:image\/[a-z]+;base64,/, ""),
