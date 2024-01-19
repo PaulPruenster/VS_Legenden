@@ -11,7 +11,7 @@
 <body>
     <h1>Survailance camera backend</h1>
 
-    <div x-data="{imageUrl: ''}" style="display: flex; flex-direction: column; gap: 20px">
+    <div x-data="{imageUrl: '', result: ''}" style="display: flex; flex-direction: column; gap: 20px">
         <template x-if="imageUrl">
             <img :src="imageUrl" style="width: 200px; height: 200px;">
         </template>
@@ -20,11 +20,43 @@
 
         <br>
         <button @click="upload">Upload Image!</button>
+
+        <h1 x-text="result"></h1>
     </div>
 
     <script>
         function upload() {
             console.log(this.imageUrl);
+
+            const data = {
+                id: 0,
+                image: this.imageUrl
+            }
+
+            fetch("https://pz667tpdh7.execute-api.us-east-1.amazonaws.com/default/api-endpunkt", {
+                method: "POST",
+                headers: {
+                    "Access-Control-Request-Method": "POST",
+                    "Access-Control-Request-Headers": "*",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json"
+                },
+                body: data,
+            })
+                .then(res => {
+                    this.result = 'Success!'
+                })
+                .catch(err => {
+                    this.result = 'Error, try again!'
+
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        this.result = ''
+                    }, 2000);
+                })
         }
 
         function fileChosen(event) {
