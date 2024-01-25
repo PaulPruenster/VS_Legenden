@@ -50,7 +50,7 @@
             if (!this.imageUrl) return
 
             const data = JSON.stringify({
-                id: this.p_id,
+                id: parseInt(this.p_id),
                 image: this.imageUrl.replace(/^data:image\/[a-z]+;base64,/, ""),
             })
 
