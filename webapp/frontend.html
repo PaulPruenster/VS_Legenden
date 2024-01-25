@@ -8,7 +8,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body x-data="{search: false, term: '', spaces: 0, result: ''}" style="text-align: center;">
+<body x-data="{search: false, term: '', spaces: '', result: ''}" style="text-align: center;">
     <h1>Alpine Parking</h1>
 
     <h2 x-init="getFreeSpaces">Free parking spaces: <strong x-text="spaces"></strong></h2>
@@ -25,12 +25,12 @@
 
     <script>
         function getFreeSpaces() {
-
-            fetch('https://cmqbitnhx0.execute-api.us-east-1.amazonaws.com/default/dynamoGet')
-                .then(response => response.json())
-                .then(data => this.spaces = data.items.length)
-                .catch(error => console.error('Error:', error));
-
+            setInterval(() => {
+                fetch('https://cmqbitnhx0.execute-api.us-east-1.amazonaws.com/default/dynamoGet')
+                    .then(response => response.json())
+                    .then(data => this.spaces = data.items.length)
+                    .catch(error => console.error('Error:', error));
+            }, 5000);
         }
 
         function findMyCar(e) {
