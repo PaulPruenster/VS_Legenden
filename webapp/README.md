@@ -11,5 +11,5 @@ Thats it!
 
 ## Links
 
-- Frontend running at: http://localhost:3000
-- Backend running at: http://localhost:3000/backend
+- Frontend running at: http://localhost:8080
+- Backend running at: http://localhost:8080/backend
