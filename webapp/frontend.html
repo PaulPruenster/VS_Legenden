@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlpineJS Parking</title>
     <script src="//unpkg.com/alpinejs" defer></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 
 <body x-data="{search: false, term: '', spaces: '', result: ''}" style="text-align: center;">
@@ -14,13 +18,22 @@
     <h2 x-init="getFreeSpaces">Free parking spaces: <strong x-text="spaces"></strong></h2>
 
     <div x-show="!search" x-transition>
-        <input x-model="term" placeholder="Type number plate here..." type="text" />
-        <button @click="findMyCar">Find my car!</button>
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="sample1" x-model="term"
+                placeholder="Type number plate here...">
+            <label class="mdl-textfield__label" for="sample1">Text...</label>
+        </div>
+        <button @click="findMyCar" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            Find my car!
+        </button>
     </div>
 
     <div x-show="search" x-transition>
-        <p x-text="result"></p>
-        <button @click="search = false" x-transition>Back</button>
+        <h5 x-text="result"></h5>
+        <button @click="search = false" x-transition
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            Back
+        </button>
     </div>
 
     <script>
@@ -30,31 +43,25 @@
                     .then(response => response.json())
                     .then(data => this.spaces = data.items.length)
                     .catch(error => console.error('Error:', error));
-            }, 5000);
+            }, 3000);
         }
 
         function findMyCar(e) {
-            this.search = true
+            if (!this.term) return
 
-            const data = JSON.stringify({
+            fetch('https://e2p48wqyb4.execute-api.us-east-1.amazonaws.com/default/findLICENCE?' + new URLSearchParams({
                 number_plate: this.term,
-            })
-
-            fetch('https://ibfg8loz0c.execute-api.us-east-1.amazonaws.com/default/findLICENCE', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    number_plate: this.term,
-                }),
-            })
+            }))
                 .then(response => response.json())
                 .then(data => {
+                    this.search = true
                     console.log(data);
-                    this.result = 'Your car is in parking space nr: ' + data.item
+                    this.result = 'Your car is in parking space nr: ' + data.item.parking_id
                 })
-                .catch(error => this.result = 'You car was not found!');
+                .catch(error => {
+                    this.search = true
+                    this.result = 'You car was not found!'
+                });
         }
     </script>
 

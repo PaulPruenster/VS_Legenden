@@ -6,30 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlpineJS Parking</title>
     <script src="//unpkg.com/alpinejs" defer></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 
 <body style="text-align: center;">
     <h1>Survailance camera backend</h1>
 
-    <div x-data="{imageUrl: '', result: ''}" style="display: flex; flex-direction: column; gap: 20px">
+    <div x-data="{imageUrl: '', result: '', p_id: 1}">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input x-model="p_id" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sample4">
+            <label class="mdl-textfield__label" for="sample4">Number...</label>
+            <span class="mdl-textfield__error">Input is not a number!</span>
+        </div>
+
+
         <template x-if="imageUrl">
             <img :src="imageUrl" style="width: 200px; height: 200px;">
         </template>
 
-        <input type="file" accept="image/*" @change="fileChosen">
+        <style>
+            #file {
+                display: none;
+            }
+        </style>
+        <label class="mdl-button mdl-js-button mdl-button--icon mdl-button--file">
+            <i class="material-icons">attach_file</i><input type="file" id="file" accept="image/*" @change="fileChosen">
+        </label>
 
-        <br>
-        <button @click="upload">Upload Image!</button>
+        <button x-bind:disabled="imageUrl == ''" @click="upload"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+            Upload
+        </button>
 
-        <h1 x-text="result"></h1>
+        <h2 x-text="result"></h2>
     </div>
 
     <script>
         function upload() {
             console.log(this.imageUrl);
+            if (!this.imageUrl) return
 
             const data = JSON.stringify({
-                id: 1,
+                id: this.p_id,
                 image: this.imageUrl.replace(/^data:image\/[a-z]+;base64,/, ""),
             })
 
@@ -40,14 +61,8 @@
                 },
                 body: data,
             })
-                .then(res => {
-                    this.result = 'Success!'
-                })
-                .catch(err => {
-                    this.result = 'Error, try again!'
-
-                })
                 .finally(() => {
+                    this.result = 'Image was uploaded'
                     setTimeout(() => {
                         this.result = ''
                     }, 2000);
