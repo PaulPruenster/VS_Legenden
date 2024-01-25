@@ -12,8 +12,11 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 
-<body x-data="{search: false, term: '', spaces: '', result: '', items: []}"
+<body x-data="{search: false, searching: false, term: '', spaces: '', result: '', items: []}"
     style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+    <div x-show="spaces == '' || searching" id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate">
+    </div>
 
     <h1>Alpine Parking</h1>
     <div>
@@ -62,6 +65,8 @@
         function findMyCar(e) {
             if (!this.term) return
 
+            this.searching = true
+
             fetch('https://e2p48wqyb4.execute-api.us-east-1.amazonaws.com/default/findLICENCE?' + new URLSearchParams({
                 number_plate: this.term,
             }))
@@ -74,7 +79,8 @@
                 .catch(error => {
                     this.search = true
                     this.result = 'You car was not found!'
-                });
+                })
+                .finally(() => this.searching = false);
         }
     </script>
 
