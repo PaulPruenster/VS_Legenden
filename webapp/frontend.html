@@ -12,10 +12,13 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 
-<body x-data="{search: false, term: '', spaces: '', result: ''}" style="text-align: center;">
-    <h1>Alpine Parking</h1>
+<body x-data="{search: false, term: '', spaces: '', result: ''}"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
 
-    <h2 x-init="getFreeSpaces">Free parking spaces: <strong x-text="spaces"></strong></h2>
+    <h1>Alpine Parking</h1>
+    <div>
+        <h2 x-init="getFreeSpaces">Free parking spaces: <strong x-text="spaces"></strong></h2>
+    </div>
 
     <div x-show="!search" x-transition>
         <div class="mdl-textfield mdl-js-textfield">
